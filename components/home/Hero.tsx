@@ -84,6 +84,7 @@ const Hero = () => {
                                             width={300}
                                             height={300}
                                             className="rounded-lg object-contain"
+                                            priority={true}
                                         />
                                     </div>
                                 </div>
@@ -107,7 +108,7 @@ const Hero = () => {
 
                         </div>
                         <div className="w-full flex justify-center items-center">
-                            <Image src={'/slider/4.webp'} alt="iphone" width={150} height={150} className="object-contain" />
+                            <Image src={'/slider/4.webp'} alt="iphone" width={150} height={150} className="object-contain" priority={true} />
                         </div>
                     </div>
                     {/* SideBanner 2 */}
@@ -125,7 +126,7 @@ const Hero = () => {
 
                         </div>
                         <div className="w-full flex justify-center items-center">
-                            <Image src={'/slider/5.webp'} alt="iphone" width={150} height={150} className="object-contain" />
+                            <Image src={'/slider/5.webp'} alt="iphone" width={150} height={150} className="object-contain" priority={true} />
                         </div>
                     </div>
                 </div>
