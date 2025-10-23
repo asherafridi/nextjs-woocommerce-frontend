@@ -2,9 +2,9 @@ import OAuth from "oauth-1.0a";
 import CryptoJS from "crypto-js";
 
 export async function GET() {
-  const consumerKey = "ck_1608de1c2a578ed47f5bdd419b2160ff26cba0c5";
-  const consumerSecret = "cs_a1f5db8c98e5399b55887ca0887ccb9ec1482243";
-  const url = "http://localhost/zain-mart/wp-json/wc/v3/products/categories?exclude=15";
+  const consumerKey = "ck_c4ef8ac29169b164066d7757fd7708e929445999";
+  const consumerSecret = "cs_f7edb055e28be49a7a53ea14491dd06cd2fdaffb";
+  const url = "https://slateblue-sheep-666523.hostingersite.com/wp-json/wc/v3/products/categories?exclude=15";
 
   // Initialize OAuth
   const oauth = new OAuth({
