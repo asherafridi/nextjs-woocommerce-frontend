@@ -2,10 +2,19 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import "remixicon/fonts/remixicon.css";
 import MobileMenu from "./MobileMenu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { Search } from "lucide-react";
+import SearchDialog from "./SearchDialog";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -30,6 +39,7 @@ export default function Navbar() {
         <Link href="/" className="text-2xl font-semibold text-gray-800">
           Zain<span className="text-blue-600">Mart</span>
         </Link>
+        
 
         {/* Center: Navigation (Desktop only) */}
         <nav className="hidden md:flex items-center space-x-8 relative">
@@ -75,9 +85,7 @@ export default function Navbar() {
 
         {/* Right: Icons */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="hover:text-blue-600 cursor-pointer">
-            <i className="ri-search-line text-xl"></i>
-          </Button>
+          <SearchDialog />
           <Button variant="ghost" size="icon" className="hover:text-blue-600 cursor-pointer">
             <i className="ri-shopping-cart-line text-xl"></i>
           </Button>
