@@ -23,3 +23,70 @@ body {
   color: var(--foreground);
   font-family: var(--font-dm-sans), sans-serif;
 }
+
+nav a {
+  position: relative;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #2563eb; /* Tailwind blue-600 */
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+
+nav > a, nav > div > button {
+  position: relative;
+}
+
+nav > a::after, nav > div > button::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #2563eb;
+  transition: width 0.3s ease;
+}
+
+nav > a:hover::after, nav > div:hover > button::after {
+  width: 100%;
+}
+
+
+/* nprogress bar customization */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #2563eb; /* Tailwind blue-600 */
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+
+/* Optional: glow effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #2563eb, 0 0 5px #2563eb;
+  opacity: 1;
+  transform: rotate(3deg) translate(0px, -4px);
+}

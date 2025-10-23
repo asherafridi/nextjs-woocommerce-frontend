@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-white text-gray-700 pt-10 pb-6">
+    <footer className="bg-white border-t border-gray-300 text-gray-700 pt-10 pb-6">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
         
         {/* Column 1: Brand Info */}
@@ -25,7 +25,7 @@ const Footer = () => {
         {/* Column 2: Customer Service */}
         <div>
           <h3 className="text-gray-900 text-lg font-semibold mb-4">Customer Service</h3>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-4 text-sm">
             <li><Link href="#" className="hover:text-gray-900 hover:underline">Contact Us</Link></li>
             <li><Link href="#" className="hover:text-gray-900 hover:underline">FAQs</Link></li>
             <li><Link href="#" className="hover:text-gray-900 hover:underline">Returns & Refunds</Link></li>
