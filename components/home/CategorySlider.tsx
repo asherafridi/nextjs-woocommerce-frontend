@@ -23,7 +23,7 @@ const CategorySlider = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const res = await fetch("/api/products/categories");
+                const res = await fetch("/api/categories");
                 const data = await res.json();
                 // Optionally exclude ID 15
                 const filtered = data.filter((cat: Category) => cat.id !== 15);
