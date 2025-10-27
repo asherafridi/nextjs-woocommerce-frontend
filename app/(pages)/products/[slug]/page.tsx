@@ -8,10 +8,11 @@ export const dynamic = "force-dynamic";
 export default async function ProductPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   try {
-    const { data } = await wcApi.get("products", { slug: params.slug });
+    const {slug} = await params;
+    const { data } = await wcApi.get("products", { slug: slug});
 
     if (!data || data.length === 0) {
       return notFound();
