@@ -3,11 +3,11 @@ import { wcApi } from "@/lib/woocommerce";
 
 // ✅ Correctly typed dynamic route
 export async function GET(
-  req: NextRequest,
-  context: { params: { slug: string } }
+  request: Request,
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = context.params;
+    const { slug } = await context.params;
 
     const { data } = await wcApi.get("products", { slug });
 
