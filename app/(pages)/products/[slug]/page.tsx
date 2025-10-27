@@ -2,8 +2,6 @@ import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
 
 export default async function ProductPage({
   params,
