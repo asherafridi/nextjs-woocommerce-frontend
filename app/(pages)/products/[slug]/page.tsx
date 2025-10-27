@@ -2,7 +2,7 @@ import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
 import React from "react";
 
-// Generate static params for SSG (optional)
+// (Optional) Static params for SSG
 export async function generateStaticParams() {
   try {
     const { data: products } = await wcApi.get("products", { per_page: 20 });
@@ -17,20 +17,29 @@ export async function generateStaticParams() {
 
 // Fetch single product by slug
 async function getProductBySlug(slug: string) {
-  const { data } = await wcApi.get("products", { slug });
-  return data[0];
+  try {
+    const { data } = await wcApi.get("products", { slug });
+    return data[0];
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return null;
+  }
 }
 
 const ProductPage = async ({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) => {
-  const { slug } = await params;
+  const { slug } = params; // ✅ FIXED
   const product = await getProductBySlug(slug);
 
   if (!product) {
-    return <div className="text-center py-10 text-gray-600">Product not found</div>;
+    return (
+      <div className="text-center py-10 text-gray-600">
+        Product not found
+      </div>
+    );
   }
 
   return (
