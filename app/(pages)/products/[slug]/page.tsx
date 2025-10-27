@@ -26,15 +26,14 @@ async function getProductBySlug(slug: string) {
   }
 }
 
-type ProductPageProps = {
-  params: {
-    slug: string;
-  };
-};
 
 // ✅ Fix: tell Next.js to treat this as a normal async component
-const ProductPage = async ({ params }: ProductPageProps) => {
-  const { slug } = params;
+const ProductPage = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) => {
+  const { slug } = await params;
   const product = await getProductBySlug(slug);
 
   if (!product) {
