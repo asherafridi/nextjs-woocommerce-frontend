@@ -2,20 +2,6 @@ import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
 import React from "react";
 
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  try {
-    const { data: products } = await wcApi.get("products", { per_page: 20 });
-    return products.map((product: any) => ({
-      slug: product.slug,
-    }));
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
-}
-
 async function getProductBySlug(slug: string) {
   try {
     const { data } = await wcApi.get("products", { slug });
