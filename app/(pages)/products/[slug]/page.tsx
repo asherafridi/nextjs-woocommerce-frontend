@@ -2,7 +2,7 @@ import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
 import React from "react";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   try {
