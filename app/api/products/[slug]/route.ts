@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { wcApi } from "@/lib/woocommerce";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: Request,
   context: { params: Promise<{ slug: string }> }
