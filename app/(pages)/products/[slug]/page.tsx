@@ -2,7 +2,9 @@ import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
 import React from "react";
 
-// (Optional) Static params for SSG
+export const revalidate = 60; // (optional) ISR - revalidate every 60 seconds
+
+// Generate static params
 export async function generateStaticParams() {
   try {
     const { data: products } = await wcApi.get("products", { per_page: 20 });
@@ -15,7 +17,7 @@ export async function generateStaticParams() {
   }
 }
 
-// Fetch single product by slug
+// Fetch single product
 async function getProductBySlug(slug: string) {
   try {
     const { data } = await wcApi.get("products", { slug });
@@ -26,19 +28,19 @@ async function getProductBySlug(slug: string) {
   }
 }
 
-const ProductPage = async ({
-  params,
-}: {
-  params: { slug: string };
-}) => {
-  const { slug } = params; // ✅ FIXED
+type ProductPageProps = {
+  params: {
+    slug: string;
+  };
+};
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = params;
   const product = await getProductBySlug(slug);
 
   if (!product) {
     return (
-      <div className="text-center py-10 text-gray-600">
-        Product not found
-      </div>
+      <div className="text-center py-10 text-gray-600">Product not found</div>
     );
   }
 
@@ -58,7 +60,7 @@ const ProductPage = async ({
           )}
         </div>
 
-        {/* Product Info */}
+        {/* Info */}
         <div className="md:w-1/2 space-y-4">
           <h1 className="text-3xl font-semibold">{product.name}</h1>
           <p
@@ -79,7 +81,7 @@ const ProductPage = async ({
         </div>
       </div>
 
-      {/* Additional Info */}
+      {/* Details */}
       {product.short_description && (
         <div className="mt-10">
           <h2 className="text-xl font-semibold mb-2">Details</h2>
@@ -91,6 +93,4 @@ const ProductPage = async ({
       )}
     </div>
   );
-};
-
-export default ProductPage;
+}
