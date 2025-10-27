@@ -2,9 +2,8 @@ import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
 import React from "react";
 
-export const revalidate = 60; // (optional) ISR - revalidate every 60 seconds
+export const revalidate = 60;
 
-// Generate static params
 export async function generateStaticParams() {
   try {
     const { data: products } = await wcApi.get("products", { per_page: 20 });
@@ -17,7 +16,6 @@ export async function generateStaticParams() {
   }
 }
 
-// Fetch single product
 async function getProductBySlug(slug: string) {
   try {
     const { data } = await wcApi.get("products", { slug });
@@ -34,7 +32,8 @@ type ProductPageProps = {
   };
 };
 
-export default async function ProductPage({ params }: ProductPageProps) {
+// ✅ Fix: tell Next.js to treat this as a normal async component
+const ProductPage = async ({ params }: ProductPageProps) => {
   const { slug } = params;
   const product = await getProductBySlug(slug);
 
@@ -46,7 +45,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      {/* Image */}
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-1/2">
           {product.images?.[0] && (
@@ -60,7 +58,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
           )}
         </div>
 
-        {/* Info */}
         <div className="md:w-1/2 space-y-4">
           <h1 className="text-3xl font-semibold">{product.name}</h1>
           <p
@@ -74,14 +71,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
               `$${product.price}`
             )}
           </p>
-
           <button className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition">
             Add to Cart
           </button>
         </div>
       </div>
 
-      {/* Details */}
       {product.short_description && (
         <div className="mt-10">
           <h2 className="text-xl font-semibold mb-2">Details</h2>
@@ -93,4 +88,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
       )}
     </div>
   );
-}
+};
+
+export default ProductPage;
