@@ -3,6 +3,8 @@ import Image from "next/image";
 import React from "react";
 
 
+
+
 async function getProductBySlug(slug: string) {
   try {
     const { data } = await wcApi.get("products", { slug });
@@ -39,6 +41,7 @@ const ProductPage = async ({
               alt={product.name}
               width={600}
               height={600}
+              loading="eager"
               className="rounded-lg object-cover"
             />
           )}
