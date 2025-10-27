@@ -2,7 +2,7 @@ import { wcApi } from "@/lib/woocommerce";
 import axios from "axios";
 import Image from "next/image";
 import React, { use } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 
 // Fetch single product by slug
@@ -11,9 +11,8 @@ async function getProductBySlug(slug: string) {
   return data;
 }
 
-const page = () => {
-  const router = useRouter();
-  const { slug } = router.query;
+const page = ({slug}:{slug:string}) => {
+     
   const product = getProductBySlug(slug as string);
   console.log(product);
 
