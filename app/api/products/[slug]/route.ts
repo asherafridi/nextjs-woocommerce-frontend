@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { wcApi } from "@/lib/woocommerce";
 
-// ✅ Correctly typed dynamic route
 export async function GET(
   request: Request,
   context: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await context.params;
+    console.log('Slug:', slug); // ✅ Your console.log!
 
     const { data } = await wcApi.get("products", { slug });
+    console.log('WooCommerce response:', data);
 
     if (!data || data.length === 0) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
