@@ -1,47 +1,92 @@
 import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import React from "react";
+
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  try {
+    const { data: products } = await wcApi.get("products", { per_page: 20 });
+    return products.map((product: any) => ({
+      slug: product.slug,
+    }));
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
+}
+
+async function getProductBySlug(slug: string) {
+  try {
+    const { data } = await wcApi.get("products", { slug });
+    return data[0];
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return null;
+  }
+}
 
 
-export default async function ProductPage({
+// ✅ Fix: tell Next.js to treat this as a normal async component
+const ProductPage = async ({
   params,
 }: {
-  params: Promise<{ slug: string }>;
-}) {
-  try {
-    const {slug} = await params;
-    const { data } = await wcApi.get("products", { slug: slug});
+  params: Promise<{ slug: string }>
+}) => {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
 
-    if (!data || data.length === 0) {
-      return notFound();
-    }
-
-    const product = data[0];
-
+  if (!product) {
     return (
-      <div className="container mx-auto py-10">
-        <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+      <div className="text-center py-10 text-gray-600">Product not found</div>
+    );
+  }
 
-        {product.images?.length > 0 && (
-          <div className="relative w-80 h-80">
+  return (
+    <div className="max-w-5xl mx-auto p-6">
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="md:w-1/2">
+          {product.images?.[0] && (
             <Image
               src={product.images[0].src}
               alt={product.name}
-              fill
-              className="object-cover rounded-lg"
+              width={600}
+              height={600}
+              className="rounded-lg object-cover"
             />
-          </div>
-        )}
+          )}
+        </div>
 
-        <p className="mt-4 text-lg">{product.price_html}</p>
-        <div
-          className="prose mt-6"
-          dangerouslySetInnerHTML={{ __html: product.description }}
-        />
+        <div className="md:w-1/2 space-y-4">
+          <h1 className="text-3xl font-semibold">{product.name}</h1>
+          <p
+            className="text-gray-700 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: product.description }}
+          />
+          <p className="text-2xl font-bold text-green-600">
+            {product.price_html ? (
+              <span dangerouslySetInnerHTML={{ __html: product.price_html }} />
+            ) : (
+              `$${product.price}`
+            )}
+          </p>
+          <button className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition">
+            Add to Cart
+          </button>
+        </div>
       </div>
-    );
-  } catch (error) {
-    console.error("Error loading product:", error);
-    return notFound();
-  }
-}
+
+      {product.short_description && (
+        <div className="mt-10">
+          <h2 className="text-xl font-semibold mb-2">Details</h2>
+          <div
+            className="text-gray-700"
+            dangerouslySetInnerHTML={{ __html: product.short_description }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProductPage;
