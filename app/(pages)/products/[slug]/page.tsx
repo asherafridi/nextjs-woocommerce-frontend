@@ -1,7 +1,8 @@
 import { wcApi } from "@/lib/woocommerce";
 import axios from "axios";
 import Image from "next/image";
-import React from "react";
+import React, { use } from "react";
+import { useRouter } from "next/router";
 
 
 // Fetch single product by slug
@@ -10,13 +11,11 @@ async function getProductBySlug(slug: string) {
   return data;
 }
 
-const ProductPage = async ({
-  params,
-}: {
-  params: { slug: string };
-}) => {
-  const { slug } =  params;
-  const product = await getProductBySlug(slug);
+const page = () => {
+  const router = useRouter();
+  const { slug } = router.query;
+  const product = getProductBySlug(slug as string);
+  console.log(product);
 
   if (!product) {
     return <div className="text-center py-10 text-gray-600">Product not found</div>;
@@ -24,53 +23,9 @@ const ProductPage = async ({
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      {/* Image */}
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="md:w-1/2">
-          {product.images?.[0] && (
-            <Image
-              src={product.images[0].src}
-              alt={product.name}
-              width={600}
-              height={600}
-              className="rounded-lg object-cover"
-            />
-          )}
-        </div>
-
-        {/* Product Info */}
-        <div className="md:w-1/2 space-y-4">
-          <h1 className="text-3xl font-semibold">{product.name}</h1>
-          <p
-            className="text-gray-700 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: product.description }}
-          />
-          <p className="text-2xl font-bold text-green-600">
-            {product.price_html ? (
-              <span dangerouslySetInnerHTML={{ __html: product.price_html }} />
-            ) : (
-              `$${product.price}`
-            )}
-          </p>
-
-          <button className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition">
-            Add to Cart
-          </button>
-        </div>
-      </div>
-
-      {/* Additional Info */}
-      {product.short_description && (
-        <div className="mt-10">
-          <h2 className="text-xl font-semibold mb-2">Details</h2>
-          <div
-            className="text-gray-700"
-            dangerouslySetInnerHTML={{ __html: product.short_description }}
-          />
-        </div>
-      )}
+      {slug}
     </div>
   );
 };
 
-export default ProductPage;
+export default page;
