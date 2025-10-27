@@ -24,7 +24,7 @@ const MobileMenu = () => {
                     side="right"
                     className="w-100 bg-white"
                 >
-                    <div className="flex items-center justify-between border-b border-gray-200 p-4">
+                    <div className="flex items-center justify-between border-b border-gray-200 p-4  transition-transform duration-300">
                         <SheetTitle>
                             Zain<span className="text-blue-400">Mart</span>
                         </SheetTitle>

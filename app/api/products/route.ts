@@ -13,8 +13,8 @@ export async function GET(request:NextRequest) {
 
   // ✅ Append search query if provided
   const url = search
-    ? `${baseUrl}?search=${encodeURIComponent(search)}`
-    : baseUrl;
+    ? `${baseUrl}?search=${encodeURIComponent(search)}&per_page=8`
+    : `${baseUrl}?per_page=8`;
 
   // ✅ Initialize OAuth 1.0a
   const oauth = new OAuth({

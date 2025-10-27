@@ -39,7 +39,7 @@ const CategorySlider = () => {
         <section className="container mx-auto px-6 py-12 border-b border-gray-200">
             {/* Header Row */}
             <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-semibold text-gray-800">Shop by Category</h2>
+                <h2 className="text-3xl font-semibold text-gray-800">Shop by Category</h2>
 
                 <div className="flex gap-2">
                     <button
@@ -80,7 +80,7 @@ const CategorySlider = () => {
                         <div className=" rounded-lg p-4 flex flex-col items-center justify-center transition">
                             {cat.image ? (
 
-                                <div className="w-[100px] h-[100px] bg-gray-100 rounded-full flex items-center justify-center">
+                                <div className="w-[120px] h-[120px] bg-gray-100 rounded-full flex items-center justify-center">
                                     <Image
                                         src={cat.image.src}
                                         alt={cat.name}
