@@ -1,26 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { wcApi } from "@/lib/woocommerce"; // optional if you're using WooCommerce API
+import { wcApi } from "@/lib/woocommerce";
 
-// GET /api/products/:slug
+// ✅ Correctly typed dynamic route
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params: { slug: string } }
 ) {
   try {
-    const { slug } = params;
+    const { slug } = context.params;
 
-    // Example with WooCommerce
     const { data } = await wcApi.get("products", { slug });
 
     if (!data || data.length === 0) {
-      return NextResponse.json(
-        { error: "Product not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
     return NextResponse.json(data[0]);
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching product:", error);
     return NextResponse.json(
       { error: "Failed to fetch product" },
