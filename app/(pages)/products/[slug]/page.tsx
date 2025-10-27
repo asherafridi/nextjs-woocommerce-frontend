@@ -1,11 +1,15 @@
 import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
-import React from "react";
 import { notFound } from "next/navigation";
 
-export const revalidate = 0; // 🔥 means fully dynamic — no caching or ISR
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   try {
     const { data } = await wcApi.get("products", { slug: params.slug });
 
