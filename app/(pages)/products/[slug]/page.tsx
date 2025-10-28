@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import AddToCart from "./AddtoCart";
 
 // ✅ Types
 interface WooImage {
@@ -106,10 +107,7 @@ const ProductPage = async ({
           <p className="text-gray-600 mb-6">
             {product.short_description.replace(/<[^>]*>?/gm, "")}
           </p>
-
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-            Add to Cart
-          </button>
+          <AddToCart product={product} />
 
           {/* ✅ Categories */}
           {product.categories?.length > 0 && (

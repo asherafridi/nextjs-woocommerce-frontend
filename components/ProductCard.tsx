@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import AddToCart from "@/app/(pages)/products/[slug]/AddtoCart";
 
 
 interface WooImage {
@@ -118,7 +119,8 @@ const ProductCard: React.FC<{ product: WooProduct }> = ({ product }) => {
 
                     {/* Buttons */}
                     <div className="flex gap-2 pt-2">
-                        <Button variant={"default"} className="bg-blue-600 text-white hover:bg-blue-700 cursor-pointer w-full">Add to Cart</Button>
+                        {/* <Button variant={"default"} className="bg-blue-600 text-white hover:bg-blue-700 cursor-pointer w-full">Add to Cart</Button> */}
+                        <AddToCart product={product} />
                     </div>
                 </div>
             </div>

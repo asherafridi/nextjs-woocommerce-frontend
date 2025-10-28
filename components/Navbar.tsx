@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/sheet"
 import { Search } from "lucide-react";
 import SearchDialog from "./SearchDialog";
+import {useCartStore} from "@/store/cartStore";
+import CartSlider from "./CartSlider";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -32,6 +34,7 @@ const navItems = [
 ];
 
 export default function Navbar() {
+  const { items } = useCartStore();
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
@@ -86,9 +89,7 @@ export default function Navbar() {
         {/* Right: Icons */}
         <div className="flex items-center gap-3">
           <SearchDialog />
-          <Button variant="ghost" size="icon" className="hover:text-blue-600 cursor-pointer">
-            <i className="ri-shopping-cart-line text-xl"></i>
-          </Button>
+          <CartSlider />
           <Button variant="ghost" size="icon" className="hover:text-blue-600 cursor-pointer">
             <i className="ri-user-3-line text-xl"></i>
           </Button>
