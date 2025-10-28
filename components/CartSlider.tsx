@@ -39,7 +39,7 @@ export default function CartSlider() {
                 </Button>
             </SheetTrigger>
 
-            <SheetContent side="right" className="w-full min-w-lg bg-white overflow-y-auto p-6 flex flex-col">
+            <SheetContent side="right" className="w-full min-w-md md:min-w-lg bg-white overflow-y-auto p-6 flex flex-col">
                 <div className="flex items-center justify-between ">
                     <SheetHeader>
                         <SheetTitle className="font-medium text-2xl ">Your Cart</SheetTitle>
