@@ -6,10 +6,10 @@ import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
-import { Category } from "@/types/woo";
+import { WooProductCategory } from "@/types/woo";
 
 interface CategorySliderProps {
-  categories: Category[];
+  categories: WooProductCategory[];
 }
 
 const CategorySlider: React.FC<CategorySliderProps> = ({ categories }) => {

@@ -1,44 +1,10 @@
 "use client";
-
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
 import AddToCart from "@/app/(pages)/products/[slug]/AddtoCart";
+import { WooProduct } from "@/types/woo";
 
-
-interface WooImage {
-    id: number;
-    src: string;
-    alt: string;
-}
-
-interface WooCategory {
-    id: number;
-    name: string;
-    slug: string;
-}
-
-interface WooProduct {
-    id: number;
-    name: string;
-    slug: string;
-    permalink: string;
-    description: string;
-    short_description: string;
-    price: string;
-    regular_price: string;
-    sale_price: string;
-    price_html: string;
-    on_sale: boolean;
-    stock_status: string;
-    average_rating: string;
-    rating_count: number;
-    type: string;
-    categories: WooCategory[];
-    images: WooImage[];
-}
 
 const ProductCard: React.FC<{ product: WooProduct }> = ({ product }) => {
     const {

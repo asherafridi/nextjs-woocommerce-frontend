@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { X, Plus, Minus, Trash } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
+import { siteConfig } from "@/lib/config";
 
 // shadcn/ui Sheet components (adjust paths if your project uses a different import)
 import {
@@ -38,32 +39,33 @@ export default function CartSlider() {
                 </Button>
             </SheetTrigger>
 
-            <SheetContent side="right" className="w-full min-w-lg bg-white overflow-x-scroll p-4">
-                <div className="flex items-center justify-between">
+            <SheetContent side="right" className="w-full min-w-lg bg-white overflow-y-auto p-6 flex flex-col">
+                <div className="flex items-center justify-between ">
                     <SheetHeader>
-                        <SheetTitle>Your Cart</SheetTitle>
-                        <SheetDescription>
-                            Review items and proceed to checkout
-                        </SheetDescription>
+                        <SheetTitle className="font-medium text-2xl ">Your Cart</SheetTitle>
                     </SheetHeader>
                     <SheetClose asChild>
-                            <button>
-                                <i className="ri-close-line text-2xl"></i>
-                            </button>
-                        </SheetClose>
-                    
+                        <button>
+                            <i className="ri-close-line text-3xl"></i>
+                        </button>
+                    </SheetClose>
+
                 </div>
 
-                <div className="mt-4 space-y-4">
+                <div className="flex justify-between py-2 border-gray-300 border-b">
+                    <p>Products</p>
+                    <p>Total</p>
+                </div>
+                <div className="space-y-2 flex-1">
                     {cart.length === 0 ? (
                         <div className="py-10 text-center text-gray-500">Your cart is empty.</div>
                     ) : (
                         cart.map((item) => (
                             <div
                                 key={item.id}
-                                className="flex items-center gap-3 rounded-md p-3 border"
+                                className="flex gap-5 p-3 px-0 rounded-md border-gray-200 "
                             >
-                                <div className="relative w-16 h-16 rounded overflow-hidden bg-gray-100">
+                                <div className="relative w-24 h-24 rounded overflow-hidden bg-gray-100">
                                     {item.images ? (
                                         // Next/Image requires a domain or remote patterns configured; fallback to img tag if needed
                                         <Image
@@ -78,62 +80,65 @@ export default function CartSlider() {
                                 </div>
 
                                 <div className="flex-1">
-                                    <div className="font-medium">{item.name}</div>
-                                    <div className="text-sm text-gray-600">${item.price}</div>
+                                    <div className="font-medium text-xl">{item.name}</div>
+                                    <div className="text-md text-gray-600">{siteConfig.currency} {item.price}</div>
 
-                                    <div className="mt-2 flex items-center gap-2">
-                                        <button
-                                            onClick={() => decreaseQty(item.id)}
-                                            className="flex items-center justify-center w-8 h-8 rounded border"
-                                            aria-label="Decrease quantity"
-                                        >
-                                            <Minus className="w-4 h-4" />
-                                        </button>
 
-                                        <div className="px-3">{item.quantity}</div>
+                                    <div className="flex items-center mt-2">
+                                        <div className="flex items-center border border-gray-300">
+                                            <button
+                                                onClick={() => decreaseQty(item.id)}
+                                                className="flex items-center justify-center w-8 h-8 rounded"
+                                                aria-label="Decrease quantity"
+                                            >
+                                                <Minus className="w-4 h-4" />
+                                            </button>
 
-                                        <button
-                                            onClick={() => increaseQty(item.id)}
-                                            className="flex items-center justify-center w-8 h-8 rounded border"
-                                            aria-label="Increase quantity"
-                                        >
-                                            <Plus className="w-4 h-4" />
-                                        </button>
+                                            <div className="px-3 min-w-12 text-center">{item.quantity}</div>
+
+                                            <button
+                                                onClick={() => increaseQty(item.id)}
+                                                className="flex items-center justify-center w-8 h-8 rounded"
+                                                aria-label="Increase quantity"
+                                            >
+                                                <Plus className="w-4 h-4" />
+                                            </button>
+                                        </div>
 
                                         <button
                                             onClick={() => removeFromCart(item.id)}
-                                            className="ml-3 text-red-600 flex items-center gap-1"
+                                            className="ml-2 w-8 h-8 text-gray-600 bg-gray-200  border-gray-300 border flex items-center justify-center"
                                         >
-                                            <Trash className="w-4 h-4" /> Remove
+                                            <Trash className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </div>
+                                <div>
+                                    <p className="text-lg text-right">{siteConfig.currency}<br/> {Math.floor(+item.price * +item.quantity).toFixed(2)}</p>
+                                </div>
+
                             </div>
+
                         ))
                     )}
                 </div>
 
                 {/* <Separator className="my-4" /> */}
 
-                <div className="flex items-center justify-between">
-                    <div>
-                        <div className="text-sm text-gray-500">Subtotal</div>
-                        <div className="text-lg font-semibold">${total.toFixed(2)}</div>
+                <div className="border-t border-gray-200">
+                    <div className="flex w-full items-center justify-between py-3">
+                        <div className="text-xl text-gray-500">Estimate Total</div>
+                        <div className=" flex justify-end flex-col items-end">
+                            <p className="text-xl font-semibold">{siteConfig.currency} {total.toFixed(2)}</p>
+                            <p className="text-xs">Shipping & taxes calculated at checkout</p>
+                            </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                        <Button onClick={() => clearCart()} variant={"ghost"}>
-                            Clear
-                        </Button>
-                        <Button onClick={() => alert("Proceed to checkout")}>Checkout</Button>
+                    <div className="">
+                        <Button onClick={() => alert("Proceed to checkout")} className="w-full bg-blue-600 text-white rounded-none py-6">Checkout</Button>
                     </div>
                 </div>
 
-                <SheetFooter className="mt-4">
-                    <div className="text-xs text-gray-500">
-                        Shipping & taxes calculated at checkout
-                    </div>
-                </SheetFooter>
             </SheetContent>
         </Sheet>
     );

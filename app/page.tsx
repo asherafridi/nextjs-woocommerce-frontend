@@ -3,34 +3,34 @@ import Hero from "@/components/home/Hero";
 import ProductsGallery from "@/components/home/ProductsGallery";
 import Image from "next/image";
 
-import { Product,Category } from "@/types/woo";
+import { WooProduct,WooProductCategory } from "@/types/woo";
 export const revalidate = 60;
 
 export default async function Home() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`, {
+  const newArrivalsFetch = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`, {
     next: { revalidate: 900 }, // ISR cache
   });
 
-  if (!res.ok) {
+  if (!newArrivalsFetch.ok) {
     throw new Error("Failed to fetch products");
   }
-  const res1 = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`, {
-    next: { revalidate: 60 },
+  const categoriesFetch = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`, {
+    next: { revalidate: 3600 },
   });
 
-  if (!res1.ok) {
+  if (!categoriesFetch.ok) {
     throw new Error("Failed to fetch categories");
   }
 
-  const categories: Category[] = await res1.json();
+  const categories: WooProductCategory[] = await categoriesFetch.json();
 
-  const products: Product[] = await res.json();
+  const products: WooProduct[] = await newArrivalsFetch.json();
 
   return (
     <>
       <Hero />
       <CategorySlider categories={categories} />
-      <ProductsGallery products={products} />
+      <ProductsGallery products={products} name={"New Arrivals"} />
     </>
   );
 }
