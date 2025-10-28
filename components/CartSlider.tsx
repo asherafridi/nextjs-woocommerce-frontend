@@ -39,7 +39,7 @@ export default function CartSlider() {
                 </Button>
             </SheetTrigger>
 
-            <SheetContent side="right" className="w-full min-w-md md:min-w-lg bg-white overflow-y-auto p-6 flex flex-col">
+            <SheetContent side="right" className="w-full min-w-sm md:min-w-lg bg-white overflow-y-auto p-6 flex flex-col">
                 <div className="flex items-center justify-between ">
                     <SheetHeader>
                         <SheetTitle className="font-medium text-2xl ">Your Cart</SheetTitle>
@@ -130,7 +130,7 @@ export default function CartSlider() {
                         <div className="text-xl text-gray-500">Estimate Total</div>
                         <div className=" flex justify-end flex-col items-end">
                             <p className="text-xl font-semibold">{siteConfig.currency} {total.toFixed(2)}</p>
-                            <p className="text-xs">Shipping & taxes calculated at checkout</p>
+                            <p className="text-xs text-right">Shipping & taxes calculated at checkout</p>
                             </div>
                     </div>
 
