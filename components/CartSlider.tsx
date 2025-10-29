@@ -18,8 +18,10 @@ import {
     SheetClose,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function CartSlider() {
+    const router = useRouter();
     const cart = useCartStore((s) => s.items);
     const removeFromCart = useCartStore((s) => s.removeFromCart);
     const increaseQty = useCartStore((s) => s.increaseQty ?? (() => { }));
@@ -30,6 +32,8 @@ export default function CartSlider() {
         (sum, item) => sum + (parseFloat(item.price || "0") || 0) * item.quantity,
         0
     );
+
+
 
     return (
         <Sheet>
@@ -44,7 +48,7 @@ export default function CartSlider() {
                     <SheetHeader>
                         <SheetTitle className="font-medium text-2xl ">Your Cart</SheetTitle>
                     </SheetHeader>
-                    <SheetClose asChild>
+                    <SheetClose asChild id="cart-close">
                         <button>
                             <i className="ri-close-line text-3xl"></i>
                         </button>
@@ -114,7 +118,7 @@ export default function CartSlider() {
                                     </div>
                                 </div>
                                 <div>
-                                    <p className="text-lg text-right">{siteConfig.currency}<br/> {Math.floor(+item.price * +item.quantity).toFixed(2)}</p>
+                                    <p className="text-lg text-right">{siteConfig.currency}<br /> {Math.floor(+item.price * +item.quantity).toFixed(2)}</p>
                                 </div>
 
                             </div>
@@ -131,11 +135,18 @@ export default function CartSlider() {
                         <div className=" flex justify-end flex-col items-end">
                             <p className="text-xl font-semibold">{siteConfig.currency} {total.toFixed(2)}</p>
                             <p className="text-xs text-right">Shipping & taxes calculated at checkout</p>
-                            </div>
+                        </div>
                     </div>
 
                     <div className="">
-                        <Button onClick={() => alert("Proceed to checkout")} className="w-full bg-blue-600 text-white rounded-none py-6">Checkout</Button>
+                        <SheetClose asChild>
+                            <Button
+                                onClick={() => router.push("/checkout")}
+                                className="w-full bg-blue-600 text-white rounded-none py-6 cursor-pointer hover:bg-blue-500"
+                            >
+                                Checkout
+                            </Button>
+                        </SheetClose>
                     </div>
                 </div>
 

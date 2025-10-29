@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AddToCart from "@/app/(pages)/products/[slug]/AddtoCart";
 import { WooProduct } from "@/types/woo";
+import { siteConfig } from "@/lib/config";
 
 
 const ProductCard: React.FC<{ product: WooProduct }> = ({ product }) => {
@@ -69,15 +70,15 @@ const ProductCard: React.FC<{ product: WooProduct }> = ({ product }) => {
                         ) : on_sale ? (
                             <>
                                 <span className="text-lg line-through text-gray-400">
-                                    ${regular_price}
+                                    {siteConfig.currency} {regular_price}
                                 </span>
                                 <span className="text-lg font-bold text-gray-900">
-                                    ${sale_price}
+                                    {siteConfig.currency} {sale_price}
                                 </span>
                             </>
                         ) : (
                             <span className="text-lg font-bold text-gray-900">
-                                ${regular_price || price || "—"}
+                                {siteConfig.currency} {regular_price || price || "—"}
                             </span>
                         )}
                     </div>
