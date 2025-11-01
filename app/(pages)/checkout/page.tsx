@@ -244,7 +244,7 @@ const CheckoutPage = () => {
 
               <Button
                 type="submit"
-                className="w-full mt-6 bg-blue-600 text-white py-6 text-lg hover:bg-blue-500"
+                className="w-full cursor-pointer mt-6 bg-blue-600 text-white py-6 text-lg hover:bg-blue-500"
                 disabled={loading || orderItems.length === 0}
               >
                 {loading ? "Placing Order..." : "Place Order"}

@@ -24,7 +24,9 @@ export default async function Home() {
 
   const categories: WooProductCategory[] = await categoriesFetch.json();
 
-  const products: WooProduct[] = await newArrivalsFetch.json();
+  const data = await newArrivalsFetch.json();
+
+  const products: WooProduct[] = data.products;
 
   return (
     <>

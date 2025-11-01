@@ -1,40 +1,63 @@
-import OAuth from "oauth-1.0a";
-import CryptoJS from "crypto-js";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { wcApi } from "@/lib/woocommerce";
 
-export async function GET(request:NextRequest) {
-  const consumerKey = "ck_c4ef8ac29169b164066d7757fd7708e929445999";
-  const consumerSecret = "cs_f7edb055e28be49a7a53ea14491dd06cd2fdaffb";
-  const baseUrl = "https://slateblue-sheep-666523.hostingersite.com/wp-json/wc/v3/products";
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
 
-  // ✅ Get ?search= parameter from request URL
-  const { searchParams } = new URL(request.url);
-  const search = searchParams.get("search");
+    // ✅ Extract filters from query params
+    const category = searchParams.get("category");
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+    const order = searchParams.get("order") || "desc"; // asc | desc
+    const orderby = searchParams.get("orderby") || "date"; // date | price | title | popularity | rating
+    const per_page = searchParams.get("per_page") || "2"; // Products per page
+    const page = searchParams.get("page") || "1";
+    const search = searchParams.get("search");
 
-  // ✅ Append search query if provided
-  const url = search
-    ? `${baseUrl}?search=${encodeURIComponent(search)}&per_page=8`
-    : `${baseUrl}?per_page=8`;
+    // ✅ Build WooCommerce query
+    const params: Record<string, any> = {
+      per_page,
+      page,
+      order,
+      orderby,
+    };
 
-  // ✅ Initialize OAuth 1.0a
-  const oauth = new OAuth({
-    consumer: { key: consumerKey, secret: consumerSecret },
-    signature_method: "HMAC-SHA256",
-    hash_function(base_string, key) {
-      return CryptoJS.HmacSHA256(base_string, key).toString(CryptoJS.enc.Base64);
-    },
-  });
+    if (category) params.category = category;
+    if (search) params.search = search;
+    if (minPrice) params.min_price = minPrice;
+    // if (maxPrice) params.max_price = maxPrice;
 
-  // ✅ Generate OAuth authorization header
-  const request_data = { url, method: "GET" };
-  const authHeader = oauth.toHeader(oauth.authorize(request_data));
+    // ✅ Fetch from WooCommerce API
+    const queryString = new URLSearchParams(params).toString();
+    const resp = await wcApi.get(`products?${queryString}`); 
+    const { data, headers } = resp;
 
-  // ✅ Make WooCommerce API call
-  const res = await fetch(url, {
-    method: "GET",
-    headers: { Authorization: authHeader.Authorization },
-  });
+    // ✅ WooCommerce returns total + total_pages headers
+    const total = headers["x-wp-total"];
+    const totalPages = headers["x-wp-totalpages"];
 
-  const data = await res.json();
-  return NextResponse.json(data);
+    return NextResponse.json(
+      {
+        products: data,
+        pagination: {
+          total: Number(total),
+          totalPages: Number(totalPages),
+          currentPage: Number(page),
+          perPage: Number(per_page),
+        },
+      },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("❌ Error fetching products:", error.response?.data || error.message);
+
+    return NextResponse.json(
+      {
+        error: "Failed to fetch products",
+        details: error.response?.data || error.message,
+      },
+      { status: 500 }
+    );
+  }
 }

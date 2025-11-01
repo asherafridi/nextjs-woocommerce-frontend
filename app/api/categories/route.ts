@@ -1,37 +1,23 @@
-import OAuth from "oauth-1.0a";
-import CryptoJS from "crypto-js";
+import { NextResponse } from "next/server";
+import { wcApi } from "@/lib/woocommerce";
 
 export async function GET() {
-  const consumerKey = process.env.WOO_KEY!;
-  const consumerSecret = process.env.WOO_SECRET!;
-  const url = process.env.NEXT_PUBLIC_WOOCOMMERCE_URL+"/wp-json/wc/v3/products/categories?exclude=15";
+  try {
+    // ✅ Fetch WooCommerce product categories (excluding ID 15)
+    const { data } = await wcApi.get("products/categories", {
+      exclude: [15],
+    });
 
-  // Initialize OAuth
-  const oauth = new OAuth({
-    consumer: { key: consumerKey, secret: consumerSecret },
-    signature_method: "HMAC-SHA256",
-    hash_function(base_string, key) {
-      return CryptoJS.HmacSHA256(base_string, key).toString(CryptoJS.enc.Base64);
-    },
-  });
+    return NextResponse.json(data, { status: 200 });
+  } catch (error: any) {
+    console.error("❌ Error fetching categories:", error.response?.data || error.message);
 
-  // Create request data
-  const request_data = {
-    url,
-    method: "GET",
-  };
-
-  // Sign the request
-  const authHeader = oauth.toHeader(oauth.authorize(request_data));
-
-  // Fetch products
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      Authorization: authHeader.Authorization,
-    },
-  });
-
-  const data = await res.json();
-  return Response.json(data);
+    return NextResponse.json(
+      {
+        error: "Failed to fetch product categories",
+        details: error.response?.data || error.message,
+      },
+      { status: 500 }
+    );
+  }
 }

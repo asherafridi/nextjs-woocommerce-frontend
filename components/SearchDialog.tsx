@@ -28,8 +28,11 @@ export default function SearchDialog() {
             setLoading(true);
             try {
                 const res = await fetch(`/api/products?search=${encodeURIComponent(query)}`);
-                const data = await res.json();
-                setResults(data);
+                const response = await res.json();
+
+                console.log(response);
+                
+                setResults(response.products);
             } catch (error) {
                 console.error("Search failed:", error);
             } finally {
