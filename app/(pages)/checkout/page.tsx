@@ -24,6 +24,8 @@ interface CheckoutFormData {
   paymentMethod: string;
 }
 
+const baseUrl =  process.env.NEXT_PUBLIC_BASE_URL;
+
 const CheckoutPage = () => {
   const router = useRouter();
   const { register, handleSubmit, reset } = useForm<CheckoutFormData>({
@@ -60,7 +62,7 @@ const CheckoutPage = () => {
         },
       };
 
-      const res = await fetch("/api/order/create", {
+      const res = await fetch(`${baseUrl}/api/order/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),

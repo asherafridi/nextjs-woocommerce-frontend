@@ -25,6 +25,8 @@ const sortOptions = [
   { label: "Newest", value: "date" },
 ];
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 export default function ShopPage() {
   const router = useRouter();
   const pathname = usePathname();
@@ -61,7 +63,7 @@ export default function ShopPage() {
         per_page: "9",
       });
 
-      const res = await fetch(`/api/products?${params.toString()}`);
+      const res = await fetch(`${baseUrl}/api/products?${params.toString()}`);
       const data = await res.json();
 
       if (res.ok) {

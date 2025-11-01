@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { siteConfig } from '@/lib/config';
 import { Skeleton } from '../ui/skeleton';
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 const FilterShop = () => {
 
     const router = useRouter();
@@ -23,7 +25,7 @@ const FilterShop = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`);
+                const res = await fetch(`${baseUrl}/api/categories`);
                 const data = await res.json();
                 setCategories([{ id: 0, name: "All" }, ...data]);
             } catch (err) {

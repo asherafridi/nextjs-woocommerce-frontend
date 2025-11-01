@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import ShopPage from "./ShopPage";
 import { Loader2 } from "lucide-react";
 
-export default function Shop() {
+export default function page() {
   return (
     <Suspense
       fallback={
